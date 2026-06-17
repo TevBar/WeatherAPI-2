@@ -54,17 +54,23 @@
 // weather.fetchWeather("denver");
 
 let weather = { 
-    apiKey: "KrbWAj91iWaklhrTMg8PvfkwntiY1v4dhkmXnydB7Ss",
+    apiKey: "ce6df662b426596b341921564ca4ced3",
     unsplashKey: "Gea9Zi7Rqc9ss6RCipMAeXmP05ufVmIOBAif5zMI4ds",
     fetchWeather: function(city) {
         fetch(
             "https://api.openweathermap.org/data/2.5/weather?q="
             + city
-            + "&units=metric&appId=" 
+            + "&units=metric&appId="
             + this.apiKey
         )
         .then((response) => response.json())
-        .then((data) => this.displayWeather(data));
+        .then((data) => {
+            if (data.cod !== 200) {
+                alert("City not found or API error: " + (data.message || data.cod));
+                return;
+            }
+            this.displayWeather(data);
+        });
     },
     displayWeather: function(data) {
       const {name} = data;
